@@ -1,0 +1,29 @@
+# Dépendances
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Environnements (secrets)
+.env
+.env.local
+.env.production
+
+# Base SQLite locale
+*.db
+*.db-journal
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Dossiers hors déploiement
+"afrikonnect 2"/
+"afrikonnect-saas 2"/
+"afrikonnect-saas 3"/
+*.zip
+*.pdf
+_src_backup/

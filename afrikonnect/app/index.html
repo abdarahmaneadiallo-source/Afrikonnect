@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Afrikonnect — Application</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/dist/tabler-icons.min.css">
+<style>
+:root{
+  --g:#1D9E75;--gd:#0F6E56;--gl:#0d2b22;
+  --o:#D85A30;--ol:#2b1a12;
+  --gold:#BA7517;
+  --bg:#0B100E;--bg2:#111916;--bg3:#161E1B;
+  --s:#1C2620;--s2:#232E29;--s3:#2A3632;
+  --b:rgba(255,255,255,0.07);--b2:rgba(255,255,255,0.12);
+  --t:#EFF5F2;--t2:#90AFA5;--t3:#4E6E66;
+  --r:14px;--rs:8px;
+  --danger:#E24B4A;--danger-bg:rgba(226,75,74,.12);
+  --warn:#BA7517;--warn-bg:rgba(186,117,23,.12);
+  --info:#378ADD;--info-bg:rgba(55,138,221,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t);display:flex;flex-direction:column}
+
+/* === TOPBAR === */
+.topbar{height:52px;background:var(--bg2);border-bottom:1px solid var(--b);display:flex;align-items:center;gap:12px;padding:0 16px;flex-shrink:0;z-index:20}
+.logo{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;display:flex;align-items:center;gap:7px;color:var(--t);text-decoration:none}
+.d1{width:7px;height:7px;border-radius:50%;background:var(--g)}
+.d2{width:7px;height:7px;border-radius:50%;background:var(--o)}
+.topbar-search{flex:1;max-width:360px;margin-left:20px;display:flex;align-items:center;gap:8px;background:var(--s);border:1px solid var(--b);border-radius:40px;padding:0 14px;height:34px}
+.topbar-search input{background:none;border:none;color:var(--t);font-size:13px;outline:none;width:100%}
+.topbar-search input::placeholder{color:var(--t3)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.role-toggle{display:flex;background:var(--s);border:1px solid var(--b);border-radius:40px;padding:3px;gap:2px}
+.rtab{font-size:11px;padding:4px 12px;border-radius:40px;cursor:pointer;color:var(--t2);border:none;background:none;font-family:'DM Sans',sans-serif;transition:all .15s}
+.rtab.active{background:var(--g);color:#fff;font-weight:500}
+.icon-btn{width:34px;height:34px;border-radius:50%;background:var(--s);border:1px solid var(--b);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);position:relative;transition:all .15s}
+.icon-btn:hover{background:var(--s2)}
+.notif-badge{position:absolute;top:-2px;right:-2px;width:8px;height:8px;border-radius:50%;background:var(--o);border:2px solid var(--bg2)}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--gl);border:1px solid rgba(29,158,117,.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--g);cursor:pointer}
+
+/* === LAYOUT === */
+.app-layout{display:flex;flex:1;overflow:hidden}
+
+/* === SIDEBAR === */
+.sidebar{width:200px;background:var(--bg2);border-right:1px solid var(--b);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.nav-section{font-size:10px;color:var(--t3);padding:16px 14px 4px;text-transform:uppercase;letter-spacing:.07em;font-weight:500}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 14px;font-size:13px;color:var(--t2);cursor:pointer;border-left:2px solid transparent;transition:all .15s;border:none;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif;position:relative}
+.nav-item:hover{background:var(--s);color:var(--t)}
+.nav-item.active{color:var(--g);background:rgba(29,158,117,.08);border-left:2px solid var(--g)}
+.nav-item i{font-size:18px}
+.nav-badge{margin-left:auto;background:var(--o);color:#fff;font-size:9px;padding:1px 6px;border-radius:20px;font-weight:600}
+.sidebar-footer{margin-top:auto;padding:12px 14px;border-top:1px solid var(--b)}
+.user-mini{display:flex;align-items:center;gap:8px}
+.user-mini .avatar{width:30px;height:30px;font-size:10px}
+.user-mini-name{font-size:12px;font-weight:500}
+.user-mini-plan{font-size:10px;color:var(--t3)}
+
+/* === MAIN === */
+.main{flex:1;overflow-y:auto;padding:20px 24px;background:var(--bg)}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:18px}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+
+/* === CARDS === */
+.card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px 18px;margin-bottom:12px}
+.card-title{font-size:13px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500;display:inline-block}
+.bg{background:rgba(29,158,117,.15);color:#5ECFA5}
+.bb{background:var(--warn-bg);color:var(--warn)}
+.br{background:var(--danger-bg);color:var(--danger)}
+.bi{background:var(--info-bg);color:var(--info)}
+.bgr{background:var(--s2);color:var(--t2)}
+
+/* === STATS GRID === */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px 16px}
+.stat-lbl{font-size:11px;color:var(--t3);margin-bottom:4px}
+.stat-val{font-family:'Syne',sans-serif;font-size:24px;font-weight:700}
+.stat-sub{font-size:11px;color:var(--t3);margin-top:2px}
+.stat-sub.pos{color:var(--g)}
+.stat-sub.neg{color:var(--danger)}
+
+/* === GRID === */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+
+/* === ROWS === */
+.row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--b)}
+.row:last-child{border:none}
+.row-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:var(--s2)}
+.row-name{font-size:13px;font-weight:500}
+.row-sub{font-size:11px;color:var(--t3)}
+.row-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+
+/* === ALERT ROW === */
+.alert-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--b)}
+.alert-row:last-child{border:none}
+.alert-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.ai-g{background:rgba(29,158,117,.15);color:var(--g)}
+.ai-b{background:var(--warn-bg);color:var(--warn)}
+.ai-r{background:var(--danger-bg);color:var(--danger)}
+.ai-i{background:var(--info-bg);color:var(--info)}
+.alert-label{font-size:12px;font-weight:500;line-height:1.3}
+.alert-sub{font-size:11px;color:var(--t3);margin-top:2px}
+
+/* === PROGRESS === */
+.prog-bar{height:4px;background:var(--s2);border-radius:2px;margin:6px 0 3px}
+.prog-fill{height:100%;border-radius:2px;background:var(--g);transition:width .4s}
+.prog-fill.orange{background:var(--o)}
+.prog-fill.red{background:var(--danger)}
+
+/* === SUPPLIER ROW === */
+.sup-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--b)}
+.sup-row:last-child{border:none}
+.sup-ava{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.sup-name{font-size:13px;font-weight:500}
+.sup-sub{font-size:11px;color:var(--t3)}
+.stars{font-size:11px;color:var(--gold);margin-top:2px}
+
+/* === BUTTONS === */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:40px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--b2);background:transparent;color:var(--t2);font-family:'DM Sans',sans-serif;transition:all .15s}
+.btn:hover{background:var(--s2);color:var(--t)}
+.btn-g{background:var(--g);color:#fff;border-color:var(--g)}
+.btn-g:hover{background:var(--gd);color:#fff}
+.btn-o{background:var(--o);color:#fff;border-color:var(--o)}
+.btn-sm{font-size:11px;padding:5px 10px}
+.btn-full{width:100%;justify-content:center;margin-top:8px}
+
+/* === PRODUCT CARD === */
+.prod-card{background:var(--s2);border:1px solid var(--b);border-radius:12px;padding:12px;transition:border-color .15s}
+.prod-card:hover{border-color:rgba(29,158,117,.25)}
+.prod-thumb{font-size:28px;margin-bottom:8px}
+.prod-card-name{font-size:13px;font-weight:500;margin-bottom:2px}
+.prod-card-origin{font-size:11px;color:var(--t3);margin-bottom:6px}
+.prod-card-footer{display:flex;align-items:center;justify-content:space-between}
+.prod-price{font-size:15px;font-weight:600;font-family:'Syne',sans-serif}
+
+/* === FORM ELEMENTS === */
+select,input{font-size:12px;padding:7px 10px;border-radius:var(--rs);border:1px solid var(--b);background:var(--s2);color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s}
+select:focus,input:focus{border-color:rgba(29,158,117,.4)}
+
+/* === TIMELINE === */
+.tl-item{display:flex;gap:12px;padding:6px 0}
+.tl-left{display:flex;flex-direction:column;align-items:center;gap:0}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.tl-line{width:1px;flex:1;min-height:18px;background:var(--b2);margin:3px 0}
+.tl-label{font-size:12px;font-weight:500}
+.tl-sub{font-size:11px;color:var(--t3);margin-top:1px}
+
+/* === CONFORMITE === */
+.conf-scanner{background:var(--s2);border:1px dashed var(--b2);border-radius:var(--r);padding:24px;text-align:center;margin-bottom:12px;cursor:pointer;transition:all .15s}
+.conf-scanner:hover{border-color:rgba(29,158,117,.4);background:rgba(29,158,117,.04)}
+.conf-scanner i{font-size:36px;color:var(--t3);display:block;margin-bottom:8px}
+.conf-scanner p{font-size:13px;color:var(--t3)}
+
+/* === COMMUNITY === */
+.tontine-ring{width:80px;height:80px;border-radius:50%;border:3px solid var(--g);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 12px}
+.tontine-val{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--g)}
+.tontine-lbl{font-size:9px;color:var(--t3)}
+
+/* === MSG === */
+.msg-row{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--b)}
+.msg-row:last-child{border:none}
+.msg-ava{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}
+.msg-name{font-size:12px;font-weight:500}
+.msg-text{font-size:11px;color:var(--t3);margin-top:1px;line-height:1.4}
+.msg-time{margin-left:auto;font-size:10px;color:var(--t3);flex-shrink:0}
+.unread-dot{width:7px;height:7px;border-radius:50%;background:var(--o);flex-shrink:0;margin-top:5px}
+
+/* === CAT PILLS === */
+.cat-strip{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.cat-pill{font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--b);cursor:pointer;color:var(--t2);background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
+.cat-pill.active,.cat-pill:hover{background:var(--g);color:#fff;border-color:var(--g)}
+
+/* === LABEL === */
+.section-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;font-weight:500}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px}
+
+/* === RESPONSIVE === */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .g2,.g3{grid-template-columns:1fr}
+  .topbar-search{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <a href="../index.html" class="logo">
+    <span class="d1"></span><span class="d2"></span>
+    Afrikonnect
+  </a>
+  <div class="topbar-search">
+    <i class="ti ti-search" style="font-size:15px;color:var(--t3)"></i>
+    <input placeholder="Rechercher produits, fournisseurs, commandes...">
+  </div>
+  <div class="topbar-right">
+    <div class="role-toggle">
+      <button class="rtab active" onclick="setRole(this)">Commerçant</button>
+      <button class="rtab" onclick="setRole(this)">Fournisseur</button>
+    </div>
+    <div class="icon-btn" style="position:relative" title="Notifications">
+      <i class="ti ti-bell" style="font-size:18px"></i>
+      <div class="notif-badge"></div>
+    </div>
+    <div class="avatar" title="Mon profil">MK</div>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="nav-section">Principal</div>
+    <button class="nav-item active" onclick="showPage('dashboard',this)"><i class="ti ti-home"></i>Tableau de bord</button>
+    <button class="nav-item" onclick="showPage('marketplace',this)"><i class="ti ti-building-store"></i>Marketplace</button>
+    <button class="nav-item" onclick="showPage('commandes',this)"><i class="ti ti-package"></i>Commandes</button>
+    <div class="nav-section">Outils</div>
+    <button class="nav-item" onclick="showPage('logistique',this)"><i class="ti ti-truck"></i>Logistique</button>
+    <button class="nav-item" onclick="showPage('conformite',this)"><i class="ti ti-shield-check"></i>Conformité</button>
+    <button class="nav-item" onclick="showPage('communaute',this)"><i class="ti ti-users"></i>Communauté</button>
+    <div class="nav-section">Compte</div>
+    <button class="nav-item" onclick="showPage('messages',this)"><i class="ti ti-message"></i>Messages<span class="nav-badge">3</span></button>
+    <button class="nav-item" onclick="showPage('parametres',this)"><i class="ti ti-settings"></i>Paramètres</button>
+    <div class="sidebar-footer">
+      <div class="user-mini">
+        <div class="avatar">MK</div>
+        <div>
+          <div class="user-mini-name">Mamadou K.</div>
+          <div class="user-mini-plan">Plan Pro · 29 €/mois</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="pg-dashboard">
+      <div class="page-header">
+        <div class="page-title">Tableau de bord 👋</div>
+        <button class="btn btn-g btn-sm" onclick="showPage('marketplace', document.querySelector('[onclick*=marketplace]'))"><i class="ti ti-plus"></i>Nouvelle commande</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat"><div class="stat-lbl">Commandes ce mois</div><div class="stat-val">24</div><div class="stat-sub pos">+3 cette semaine</div></div>
+        <div class="stat"><div class="stat-lbl">Dépenses import</div><div class="stat-val">4 820 €</div><div class="stat-sub">Budget: 6 000 €</div></div>
+        <div class="stat"><div class="stat-lbl">Alertes actives</div><div class="stat-val" style="color:var(--danger)">3</div><div class="stat-sub neg">Action requise</div></div>
+        <div class="stat"><div class="stat-lbl">Score conformité</div><div class="stat-val" style="color:var(--g)">87%</div><div class="stat-sub pos">Bon niveau</div></div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Commandes en cours <span class="badge bb">3 actives</span></div>
+          <div class="row"><div class="row-icon">🌴</div><div><div class="row-name">#4821 — Huile de palme 20L</div><div class="row-sub">Kofi Exports · Marseille le 28 mai</div></div><div class="row-right"><span class="badge bg">Transit</span></div></div>
+          <div class="row"><div class="row-icon">🌾</div><div><div class="row-name">#4819 — Farine de manioc 50kg</div><div class="row-sub">Dakar Spices · Cert. manquant</div></div><div class="row-right"><span class="badge br">Bloqué</span></div></div>
+          <div class="row"><div class="row-icon">🐟</div><div><div class="row-name">#4815 — Poisson fumé lot</div><div class="row-sub">Lagos Foods · Départ Lagos</div></div><div class="row-right"><span class="badge bi">Expédié</span></div></div>
+          <button class="btn btn-full" onclick="showPage('commandes', document.querySelector('[onclick*=commandes]'))"><i class="ti ti-package"></i>Voir toutes les commandes</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Alertes & notifications</div>
+          <div class="alert-row"><div class="alert-icon ai-r"><i class="ti ti-alert-triangle"></i></div><div><div class="alert-label">Lot #4819 bloqué en douane</div><div class="alert-sub">Certificat sanitaire manquant — action sous 48h</div></div><button class="btn btn-sm" style="margin-left:auto;flex-shrink:0" onclick="showPage('conformite', document.querySelector('[onclick*=conformite]'))">Résoudre</button></div>
+          <div class="alert-row"><div class="alert-icon ai-b"><i class="ti ti-package"></i></div><div><div class="alert-label">Stock faible — Gari 25kg</div><div class="alert-sub">8 unités restantes · Seuil d'alerte : 10</div></div></div>
+          <div class="alert-row"><div class="alert-icon ai-g"><i class="ti ti-check"></i></div><div><div class="alert-label">Nouveau fournisseur vérifié</div><div class="alert-sub">Kofi Exports — Côte d'Ivoire · ★★★★★</div></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Fournisseurs recommandés <span class="badge bgr">Vérifiés ✓</span></div>
+        <div class="g2" style="margin:0">
+          <div>
+            <div class="sup-row"><div class="sup-ava" style="background:rgba(216,90,48,.15);color:var(--o)">KE</div><div><div class="sup-name">Kofi Exports</div><div class="sup-sub">Côte d'Ivoire · Épicerie sèche, huiles</div><div class="stars">★★★★★</div></div><div style="margin-left:auto;text-align:right"><div style="font-size:10px;color:var(--t3)">Délai moy.</div><div style="font-size:13px;font-weight:600">18 jours</div></div><button class="btn btn-g btn-sm" style="margin-left:10px">Contacter</button></div>
+            <div class="sup-row"><div class="sup-ava" style="background:var(--gl);color:var(--g)">DS</div><div><div class="sup-name">Dakar Spices</div><div class="sup-sub">Sénégal · Épices, condiments</div><div class="stars">★★★★☆</div></div><div style="margin-left:auto;text-align:right"><div style="font-size:10px;color:var(--t3)">Délai moy.</div><div style="font-size:13px;font-weight:600">22 jours</div></div><button class="btn btn-sm" style="margin-left:10px">Contacter</button></div>
+          </div>
+          <div>
+            <div class="sup-row"><div class="sup-ava" style="background:var(--info-bg);color:var(--info)">LF</div><div><div class="sup-name">Lagos Foods</div><div class="sup-sub">Nigeria · Poisson, viandes fumées</div><div class="stars">★★★★☆</div></div><div style="margin-left:auto;text-align:right"><div style="font-size:10px;color:var(--t3)">Délai moy.</div><div style="font-size:13px;font-weight:600">25 jours</div></div><button class="btn btn-sm" style="margin-left:10px">Contacter</button></div>
+            <div class="sup-row"><div class="sup-ava" style="background:var(--warn-bg);color:var(--warn)">BN</div><div><div class="sup-name">Burkina Naturel</div><div class="sup-sub">Burkina Faso · Cosmétiques bio</div><div class="stars">★★★★★</div></div><div style="margin-left:auto;text-align:right"><div style="font-size:10px;color:var(--t3)">Délai moy.</div><div style="font-size:13px;font-weight:600">30 jours</div></div><button class="btn btn-sm" style="margin-left:10px">Contacter</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARKETPLACE -->
+    <div class="page" id="pg-marketplace">
+      <div class="page-header">
+        <div class="page-title">Marketplace</div>
+        <div style="display:flex;gap:8px">
+          <select><option>Tous les pays</option><option>Côte d'Ivoire</option><option>Sénégal</option><option>Nigeria</option><option>Cameroun</option></select>
+          <button class="btn btn-g btn-sm"><i class="ti ti-adjustments"></i>Filtres</button>
+        </div>
+      </div>
+      <div class="cat-strip">
+        <button class="cat-pill active">Tout</button>
+        <button class="cat-pill">🌾 Épicerie sèche</button>
+        <button class="cat-pill">🐟 Poisson & viande</button>
+        <button class="cat-pill">🧴 Cosmétiques</button>
+        <button class="cat-pill">🌿 Plantes & épices</button>
+        <button class="cat-pill">👗 Textile & mode</button>
+      </div>
+      <div class="section-lbl">Produits certifiés UE — étiquetage français inclus</div>
+      <div class="g3">
+        <div class="prod-card"><div class="prod-thumb">🌴</div><div class="prod-card-name">Huile de palme rouge — 20L</div><div class="prod-card-origin">Kofi Exports · Côte d'Ivoire · ISO 22000</div><span class="badge bg" style="margin-bottom:8px">En stock</span><div class="prod-card-footer"><span class="prod-price">38 €</span><button class="btn btn-g btn-sm"><i class="ti ti-shopping-cart"></i>Commander</button></div></div>
+        <div class="prod-card"><div class="prod-thumb">🌾</div><div class="prod-card-name">Farine de manioc — 25kg</div><div class="prod-card-origin">Dakar Spices · Sénégal · Cert. FR inclus</div><span class="badge bg" style="margin-bottom:8px">En stock</span><div class="prod-card-footer"><span class="prod-price">22 €</span><button class="btn btn-g btn-sm"><i class="ti ti-shopping-cart"></i>Commander</button></div></div>
+        <div class="prod-card"><div class="prod-thumb">🐟</div><div class="prod-card-name">Poisson fumé — lot 5kg</div><div class="prod-card-origin">Lagos Foods · Nigeria · Sanitaire OK</div><span class="badge bb" style="margin-bottom:8px">Délai 3j</span><div class="prod-card-footer"><span class="prod-price">45 €</span><button class="btn btn-g btn-sm"><i class="ti ti-shopping-cart"></i>Commander</button></div></div>
+        <div class="prod-card"><div class="prod-thumb">🧴</div><div class="prod-card-name">Beurre de karité pur — 1kg</div><div class="prod-card-origin">Burkina Naturel · Bio certifié</div><span class="badge bg" style="margin-bottom:8px">En stock</span><div class="prod-card-footer"><span class="prod-price">14 €</span><button class="btn btn-g btn-sm"><i class="ti ti-shopping-cart"></i>Commander</button></div></div>
+        <div class="prod-card"><div class="prod-thumb">🌶</div><div class="prod-card-name">Piment séché — 10kg</div><div class="prod-card-origin">Dakar Spices · Sénégal · Lot grossiste</div><span class="badge bg" style="margin-bottom:8px">En stock</span><div class="prod-card-footer"><span class="prod-price">31 €</span><button class="btn btn-g btn-sm"><i class="ti ti-shopping-cart"></i>Commander</button></div></div>
+        <div class="prod-card"><div class="prod-thumb">🫒</div><div class="prod-card-name">Huile de nigelle — 500ml</div><div class="prod-card-origin">Morocco Naturel · Maroc · Bio</div><span class="badge bg" style="margin-bottom:8px">En stock</span><div class="prod-card-footer"><span class="prod-price">18 €</span><button class="btn btn-g btn-sm"><i class="ti ti-shopping-cart"></i>Commander</button></div></div>
+      </div>
+      <div class="card" style="background:rgba(29,158,117,.06);border-color:rgba(29,158,117,.2)">
+        <div class="card-title"><span style="display:flex;align-items:center;gap:8px"><i class="ti ti-users" style="font-size:18px;color:var(--g)"></i>Commandes groupées disponibles</span><span class="badge bg">Économisez jusqu'à 60%</span></div>
+        <div class="g2" style="margin:0">
+          <div class="sup-row" style="border:none"><div class="alert-icon ai-g"><i class="ti ti-truck"></i></div><div><div class="sup-name">Groupe Abidjan → Lyon</div><div class="sup-sub">3/5 boutiques · Départ 25 mai · Économie ~200 €</div></div><button class="btn btn-g btn-sm" style="margin-left:auto">Rejoindre</button></div>
+          <div class="sup-row" style="border:none"><div class="alert-icon ai-b"><i class="ti ti-clock"></i></div><div><div class="sup-name">Groupe Dakar → Paris</div><div class="sup-sub">1/5 boutiques · En formation · Places disponibles</div></div><button class="btn btn-sm" style="margin-left:auto">Rejoindre</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMMANDES -->
+    <div class="page" id="pg-commandes">
+      <div class="page-header">
+        <div class="page-title">Mes commandes</div>
+        <span class="badge bgr">3 actives</span>
+      </div>
+      <div class="card">
+        <div class="card-title">#4821 — Huile de palme 20L <span class="badge bg">En transit</span></div>
+        <div class="section-lbl">Suivi de livraison</div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:var(--g)"></div><div class="tl-line"></div></div><div><div class="tl-label">Commande confirmée</div><div class="tl-sub">12 mai — Kofi Exports, Abidjan</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:var(--g)"></div><div class="tl-line"></div></div><div><div class="tl-label">Chargement conteneur</div><div class="tl-sub">15 mai — Port d'Abidjan · Conteneur partagé</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:var(--info)"></div><div class="tl-line"></div></div><div><div class="tl-label">En transit maritime</div><div class="tl-sub">17 mai — Arrivée estimée Marseille : 28 mai</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:var(--b2)"></div><div class="tl-line"></div></div><div><div class="tl-label" style="color:var(--t3)">Dédouanement France</div><div class="tl-sub">En attente</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:var(--b2)"></div></div><div><div class="tl-label" style="color:var(--t3)">Livraison boutique</div><div class="tl-sub">Estimée : 30 mai</div></div></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:55%"></div></div>
+        <div style="font-size:11px;color:var(--t3)">55% — Transit maritime · Arrivée dans ~11 jours</div>
+      </div>
+      <div class="card" style="border-color:rgba(226,75,74,.3)">
+        <div class="card-title">#4819 — Farine de manioc 50kg <span class="badge br">Bloqué douane</span></div>
+        <div class="alert-row"><div class="alert-icon ai-r"><i class="ti ti-alert-triangle"></i></div><div><div class="alert-label">Certificat sanitaire manquant</div><div class="alert-sub">Document requis par la DGCCRF — à fournir sous 48h pour éviter la destruction du lot</div></div></div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn btn-g" onclick="showPage('conformite', document.querySelector('[onclick*=conformite]'))"><i class="ti ti-file-certificate"></i>Résoudre ce blocage</button>
+          <button class="btn"><i class="ti ti-phone"></i>Contacter transitaire</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">#4815 — Poisson fumé lot <span class="badge bi">Expédié</span></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:var(--g)"></div><div class="tl-line"></div></div><div><div class="tl-label">Commande confirmée</div><div class="tl-sub">8 mai — Lagos Foods, Lagos</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:var(--info)"></div><div class="tl-line"></div></div><div><div class="tl-label">En route vers le port</div><div class="tl-sub">17 mai — Port de Lagos dans 3 jours</div></div></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:20%;background:var(--info)"></div></div>
+        <div style="font-size:11px;color:var(--t3)">20% — Arrivée estimée France : 5 juin</div>
+      </div>
+    </div>
+
+    <!-- LOGISTIQUE -->
+    <div class="page" id="pg-logistique">
+      <div class="page-title">Logistique & expéditions</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Calculateur de fret</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div><label style="font-size:11px;color:var(--t3);display:block;margin-bottom:4px">Mode de transport</label>
+            <select style="width:100%" id="transport" onchange="calcFret()"><option value="1.8">Maritime (conteneur) — Économique</option><option value="12">Aérien express — Rapide</option><option value="3.2">Routier via Maghreb — Intermédiaire</option></select></div>
+            <div><label style="font-size:11px;color:var(--t3);display:block;margin-bottom:4px">Pays d'origine</label>
+            <select style="width:100%"><option>Côte d'Ivoire (Abidjan)</option><option>Sénégal (Dakar)</option><option>Nigeria (Lagos)</option><option>Cameroun (Douala)</option><option>Ghana (Accra)</option></select></div>
+            <div><label style="font-size:11px;color:var(--t3);display:block;margin-bottom:4px">Poids estimé (kg)</label>
+            <input type="number" id="poids" value="100" min="1" style="width:100%" oninput="calcFret()"></div>
+            <div style="background:var(--s2);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--b2)">
+              <div><div style="font-size:11px;color:var(--t3);margin-bottom:2px">Coût estimé (douane incluse)</div><div id="fret-cost" style="font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--g)">180 €</div></div>
+              <div style="text-align:right"><div style="font-size:11px;color:var(--t3)">Délai estimé</div><div id="fret-delay" style="font-size:14px;font-weight:500">18–25 jours</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Commandes groupées</div>
+          <div style="font-size:12px;color:var(--t3);margin-bottom:12px">Partagez un conteneur avec d'autres boutiques de votre région pour diviser les coûts logistiques.</div>
+          <div class="alert-row"><div class="alert-icon ai-g"><i class="ti ti-users"></i></div><div><div class="alert-label">Groupe Abidjan → Lyon</div><div class="alert-sub">3/5 boutiques · Départ 25 mai · ~200 € économisés</div></div><button class="btn btn-g btn-sm" style="margin-left:auto;flex-shrink:0">Rejoindre</button></div>
+          <div class="alert-row"><div class="alert-icon ai-b"><i class="ti ti-clock"></i></div><div><div class="alert-label">Groupe Dakar → Paris</div><div class="alert-sub">1/5 boutiques · En formation · Places dispo</div></div><button class="btn btn-sm" style="margin-left:auto;flex-shrink:0">Rejoindre</button></div>
+          <button class="btn btn-full"><i class="ti ti-plus"></i>Créer un nouveau groupe</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Transitaires partenaires</div>
+        <div class="g2" style="margin:0">
+          <div class="sup-row"><div class="sup-ava" style="background:var(--gl);color:var(--g)">CE</div><div><div class="sup-name">Centrimex — Marseille</div><div class="sup-sub">70+ ans d'expérience · Spécialisé Afrique-France</div><div class="stars">★★★★★</div></div><button class="btn btn-sm" style="margin-left:auto">Contacter</button></div>
+          <div class="sup-row"><div class="sup-ava" style="background:var(--info-bg);color:var(--info)">EI</div><div><div class="sup-name">Excess International</div><div class="sup-sub">Paris · Import Afrique subsaharienne</div><div class="stars">★★★★☆</div></div><button class="btn btn-sm" style="margin-left:auto">Contacter</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONFORMITE -->
+    <div class="page" id="pg-conformite">
+      <div class="page-header">
+        <div class="page-title">Conformité & douanes</div>
+        <span class="badge bg" style="font-size:12px;padding:4px 12px">Score global : 87%</span>
+      </div>
+      <div class="conf-scanner" onclick="alert('Scanner activé — en production, la caméra s\'ouvre pour scanner le code-barre du produit')">
+        <i class="ti ti-scan"></i>
+        <p>Cliquez pour scanner un produit et vérifier sa conformité</p>
+        <p style="font-size:11px;color:var(--t3);margin-top:4px">Ou entrez manuellement le nom du produit ci-dessous</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Vérification manuelle — IA</div>
+        <div style="display:flex;gap:8px">
+          <input placeholder="Ex: farine de manioc, huile de palme, poisson fumé..." style="flex:1" id="conf-input">
+          <button class="btn btn-g" onclick="verifierConf()"><i class="ti ti-search"></i>Vérifier</button>
+        </div>
+        <div id="conf-result" style="margin-top:12px;display:none">
+          <div class="prog-bar"><div class="prog-fill" id="conf-bar" style="width:67%"></div></div>
+          <div style="font-size:12px;color:var(--t3);margin-bottom:10px" id="conf-score">Score : 67% — Améliorations nécessaires</div>
+          <div class="alert-row"><div class="alert-icon ai-g"><i class="ti ti-check"></i></div><div><div class="alert-label">Étiquetage en français</div><div class="alert-sub">Nom, ingrédients, allergènes présents</div></div></div>
+          <div class="alert-row"><div class="alert-icon ai-g"><i class="ti ti-check"></i></div><div><div class="alert-label">Date de péremption visible</div><div class="alert-sub">Format DD/MM/YYYY conforme</div></div></div>
+          <div class="alert-row"><div class="alert-icon ai-r"><i class="ti ti-x"></i></div><div><div class="alert-label">Certificat sanitaire manquant</div><div class="alert-sub">Document DGCCRF requis pour les poissons fumés hors-UE</div></div><button class="btn btn-sm" style="margin-left:auto;flex-shrink:0">Guide</button></div>
+          <div class="alert-row"><div class="alert-icon ai-b"><i class="ti ti-alert-triangle"></i></div><div><div class="alert-label">Traçabilité fournisseur incomplète</div><div class="alert-sub">Numéro de lot requis sur l'emballage</div></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Codes douaniers fréquents</div>
+        <div class="row"><div style="flex:1"><div class="row-name">Huile de palme</div><div class="row-sub">Code NC : 1511 10 90 · TVA 5,5% · Droit 0%</div></div><span class="badge bg">Import libre</span></div>
+        <div class="row"><div style="flex:1"><div class="row-name">Farine de manioc</div><div class="row-sub">Code NC : 1108 14 00 · TVA 5,5% · Droit 0%</div></div><span class="badge bg">Import libre</span></div>
+        <div class="row"><div style="flex:1"><div class="row-name">Poisson fumé</div><div class="row-sub">Code NC : 0305 41 00 · TVA 5,5% · Cert. sanitaire obligatoire</div></div><span class="badge bb">Contrôlé</span></div>
+        <div class="row"><div style="flex:1"><div class="row-name">Beurre de karité</div><div class="row-sub">Code NC : 1515 90 91 · TVA 20% · Droit 0%</div></div><span class="badge bg">Import libre</span></div>
+        <div class="row"><div style="flex:1"><div class="row-name">Piment séché</div><div class="row-sub">Code NC : 0904 21 10 · TVA 5,5% · Droit 0%</div></div><span class="badge bg">Import libre</span></div>
+        <div class="row"><div style="flex:1"><div class="row-name">Tissus wax imprimés</div><div class="row-sub">Code NC : 5208 · TVA 20% · Droit 12%</div></div><span class="badge bb">Taxé</span></div>
+      </div>
+    </div>
+
+    <!-- COMMUNAUTE -->
+    <div class="page" id="pg-communaute">
+      <div class="page-title">Communauté</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Ma tontine numérique <span class="badge bg">Actif</span></div>
+          <div class="tontine-ring"><div class="tontine-val">4 000 €</div><div class="tontine-lbl">cagnotte</div></div>
+          <div style="text-align:center;margin-bottom:10px">
+            <div style="font-size:14px;font-weight:600">Tontine Mai 2026</div>
+            <div style="font-size:12px;color:var(--t3)">8 membres · Mon tour : 28 mai</div>
+          </div>
+          <div class="prog-bar"><div class="prog-fill" style="width:80%"></div></div>
+          <div style="font-size:11px;color:var(--t3);margin-bottom:10px">80% collecté — 3 200 € / 4 000 €</div>
+          <div class="row"><div class="row-name">Membres actifs</div><div class="row-right" style="display:flex;gap:4px">
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--gl);color:var(--g);font-size:9px;display:flex;align-items:center;justify-content:center">MK</div>
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--warn-bg);color:var(--warn);font-size:9px;display:flex;align-items:center;justify-content:center">AB</div>
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--info-bg);color:var(--info);font-size:9px;display:flex;align-items:center;justify-content:center">KD</div>
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--s2);color:var(--t3);font-size:9px;display:flex;align-items:center;justify-content:center">+5</div>
+          </div></div>
+          <button class="btn btn-g btn-full"><i class="ti ti-pig-money"></i>Gérer ma tontine</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Groupes de commerçants</div>
+          <div class="alert-row"><div class="alert-icon ai-i"><i class="ti ti-users"></i></div><div><div class="alert-label">Commerçants Île-de-France</div><div class="alert-sub">342 membres · 5 actifs aujourd'hui</div></div><button class="btn btn-sm" style="margin-left:auto">Rejoindre</button></div>
+          <div class="alert-row"><div class="alert-icon ai-g"><i class="ti ti-truck"></i></div><div><div class="alert-label">Groupement achat Abidjan</div><div class="alert-sub">18 membres · Container commun mai</div></div><button class="btn btn-sm" style="margin-left:auto">Voir</button></div>
+          <div class="alert-row"><div class="alert-icon ai-b"><i class="ti ti-star"></i></div><div><div class="alert-label">Beauté afro & cosmétiques</div><div class="alert-sub">87 membres · Nouveau groupe</div></div><button class="btn btn-sm" style="margin-left:auto">Rejoindre</button></div>
+          <div class="alert-row"><div class="alert-icon" style="background:var(--danger-bg);color:var(--danger)"><i class="ti ti-message"></i></div><div><div class="alert-label">Forum — Questions douanières</div><div class="alert-sub">34 questions · 12 actives</div></div><button class="btn btn-sm" style="margin-left:auto">Voir</button></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Forum — Questions récentes</div>
+        <div class="msg-row"><div class="msg-ava" style="background:var(--warn-bg);color:var(--warn)">AB</div><div><div class="msg-name">Aissatou Baldé</div><div class="msg-text">Quelqu'un a eu des problèmes avec la douane pour les feuilles de gombo séchées ? Mon lot est bloqué depuis 3 jours.</div></div><div class="msg-time">Il y a 2h</div></div>
+        <div class="msg-row"><div class="msg-ava" style="background:var(--gl);color:var(--g)">KD</div><div><div class="msg-name">Kofi Diallo</div><div class="msg-text">Mon grossiste à Château Rouge est en rupture de manioc depuis 2 semaines. Quelqu'un connaît une alternative en province ?</div></div><div class="msg-time">Il y a 4h</div></div>
+        <div class="msg-row"><div class="msg-ava" style="background:var(--info-bg);color:var(--info)">FM</div><div><div class="msg-name">Fatou Mbaye</div><div class="msg-text">Super expérience avec Dakar Spices ! Livraison en 20 jours, tous les certificats inclus, étiquetage français impeccable 👍</div></div><div class="msg-time">Hier</div></div>
+        <div class="msg-row"><div class="msg-ava" style="background:var(--danger-bg);color:var(--danger)">OR</div><div><div class="msg-name">Omar Rassou</div><div class="msg-text">Quelqu'un sait comment éviter les frais de stockage à la douane quand le lot est bloqué ? C'est la troisième fois que ça m'arrive.</div></div><div class="msg-time">Il y a 2j</div></div>
+        <button class="btn btn-full"><i class="ti ti-message-plus"></i>Poser une question au forum</button>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="page" id="pg-messages">
+      <div class="page-header">
+        <div class="page-title">Messages</div>
+        <span class="badge br">3 non lus</span>
+      </div>
+      <div class="card">
+        <div class="msg-row"><div class="unread-dot"></div><div class="msg-ava" style="background:rgba(216,90,48,.15);color:var(--o)">KE</div><div><div class="msg-name">Kofi Exports</div><div class="msg-text">Votre commande #4821 a été chargée dans le conteneur. ETA Marseille : 28 mai. Tous les documents sont joints.</div></div><div class="msg-time">10:34</div></div>
+        <div class="msg-row"><div class="unread-dot"></div><div class="msg-ava" style="background:var(--s2);color:var(--t3)">CE</div><div><div class="msg-name">Centrimex (Transitaire)</div><div class="msg-text">Merci de fournir le certificat sanitaire DGCCRF pour libérer le lot #4819 bloqué en douane. Délai maximum 48h.</div></div><div class="msg-time">09:11</div></div>
+        <div class="msg-row"><div class="unread-dot"></div><div class="msg-ava" style="background:var(--gl);color:var(--g)">DS</div><div><div class="msg-name">Dakar Spices</div><div class="msg-text">Nouveau stock disponible : piment Thiébou, poivre noir sénégalais, gombo séché. Commande groupée possible avec 3 autres boutiques.</div></div><div class="msg-time">Hier</div></div>
+        <div class="msg-row"><div class="msg-ava" style="background:var(--info-bg);color:var(--info)">AF</div><div><div class="msg-name">Afrikonnect</div><div class="msg-text">🎉 Votre score de conformité a progressé à 87% ! Résolvez l'alerte sur le lot #4819 pour atteindre 95%.</div></div><div class="msg-time">Lundi</div></div>
+        <div class="msg-row"><div class="msg-ava" style="background:var(--warn-bg);color:var(--warn)">LF</div><div><div class="msg-name">Lagos Foods</div><div class="msg-text">Votre commande #4815 de poisson fumé est en transit. Documents conformes aux normes UE joints.</div></div><div class="msg-time">Lundi</div></div>
+      </div>
+      <button class="btn btn-g"><i class="ti ti-pencil"></i>Nouveau message</button>
+    </div>
+
+    <!-- PARAMETRES -->
+    <div class="page" id="pg-parametres">
+      <div class="page-title">Paramètres du compte</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Profil boutique</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+            <div style="width:52px;height:52px;border-radius:50%;background:var(--gl);border:2px solid rgba(29,158,117,.3);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:var(--g)">MK</div>
+            <div><div style="font-size:16px;font-weight:600">Mamadou Konaté</div><div style="font-size:12px;color:var(--t3)">Épicerie Le Sahel — Lyon 8e</div></div>
+          </div>
+          <div class="row"><div class="row-name">Plan actif</div><div class="row-right"><span class="badge bi">Pro · 29 €/mois</span></div></div>
+          <div class="row"><div class="row-name">Langue</div><div class="row-right"><span style="font-size:13px">Français</span></div></div>
+          <div class="row"><div class="row-name">Pays d'approvisionnement</div><div class="row-right"><span style="font-size:13px">CI, SN, CM</span></div></div>
+          <div class="row"><div class="row-name">Notifications email</div><div class="row-right"><span style="font-size:13px;color:var(--g)">Activées</span></div></div>
+          <div class="row"><div class="row-name">Alertes douane SMS</div><div class="row-right"><span style="font-size:13px;color:var(--g)">Activées</span></div></div>
+          <button class="btn btn-full" style="margin-top:10px"><i class="ti ti-edit"></i>Modifier le profil</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Plans tarifaires</div>
+          <div class="row"><div><div class="row-name">Gratuit</div><div class="row-sub">5 commandes/mois · Marketplace · Forum</div></div><div class="row-right"><span style="font-size:14px;font-weight:600">0 €/mois</span></div></div>
+          <div class="row" style="background:rgba(29,158,117,.06);border-radius:10px;padding:8px 10px;border:1px solid rgba(29,158,117,.2);margin:4px 0"><div><div class="row-name" style="color:var(--g)">Pro ✓ (actuel)</div><div class="row-sub">Illimité · Conformité IA · Tontine · Groupements</div></div><div class="row-right"><span style="font-size:14px;font-weight:600;color:var(--g)">29 €/mois</span></div></div>
+          <div class="row"><div><div class="row-name">Fournisseur</div><div class="row-sub">Publier produits · Accès acheteurs France</div></div><div class="row-right"><span style="font-size:14px;font-weight:600">49 €/mois</span></div></div>
+          <div style="font-size:11px;color:var(--t3);margin-top:10px;padding:8px;background:var(--s2);border-radius:8px">
+            <i class="ti ti-server" style="font-size:13px"></i> Hébergé sur <strong>OVH Cloud France 🇫🇷</strong> · Données sécurisées en Europe · RGPD conforme
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('pg-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+function setRole(el) {
+  document.querySelectorAll('.rtab').forEach(r => r.classList.remove('active'));
+  el.classList.add('active');
+}
+function calcFret() {
+  const poids = parseFloat(document.getElementById('poids').value) || 100;
+  const rate = parseFloat(document.getElementById('transport').value);
+  const cost = Math.round(poids * rate);
+  document.getElementById('fret-cost').textContent = cost.toLocaleString('fr-FR') + ' €';
+  const delays = {1.8: '18–25 jours', 12: '3–7 jours', 3.2: '5–15 jours'};
+  document.getElementById('fret-delay').textContent = delays[rate] || '18–25 jours';
+}
+function verifierConf() {
+  const val = document.getElementById('conf-input').value.trim();
+  if (!val) return;
+  const res = document.getElementById('conf-result');
+  res.style.display = 'block';
+}
+</script>
+</body>
+</html>

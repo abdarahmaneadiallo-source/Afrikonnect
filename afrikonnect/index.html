@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Afrikonnect — La marketplace B2B pour les commerçants africains en France</title>
+<meta name="description" content="Afrikonnect connecte les boutiques africaines en France avec des fournisseurs vérifiés en Afrique. Logistique simplifiée, conformité douanière, commandes groupées.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1A6B4A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Afrikonnect">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-dots"><span class="d1"></span><span class="d2"></span></span>
+      Afrikonnect
+    </a>
+    <div class="nav-links">
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#comment-ca-marche">Comment ça marche</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="app/index.html" class="btn-nav">Accéder à l'app</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#fonctionnalites">Fonctionnalités</a>
+    <a href="#comment-ca-marche">Comment ça marche</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="app/index.html" class="btn-nav-mobile">Accéder à l'app →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-orb orb1"></div>
+    <div class="hero-orb orb2"></div>
+    <div class="hero-grain"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Plateforme B2B · Diaspora africaine en France
+    </div>
+    <h1 class="hero-title">
+      Le pont logistique<br>
+      entre <em>l'Afrique</em><br>
+      et votre boutique
+    </h1>
+    <p class="hero-sub">Commandez en direct auprès de fournisseurs vérifiés en Afrique, gérez vos imports en conformité avec les normes françaises, et rejoignez une communauté de commerçants qui s'entraident.</p>
+    <div class="hero-cta">
+      <a href="app/index.html" class="btn-primary">Essayer gratuitement →</a>
+      <a href="#comment-ca-marche" class="btn-ghost">Voir comment ça marche</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><strong>500+</strong><span>Boutiques actives</span></div>
+      <div class="hstat-sep"></div>
+      <div class="hstat"><strong>120+</strong><span>Fournisseurs vérifiés</span></div>
+      <div class="hstat-sep"></div>
+      <div class="hstat"><strong>15</strong><span>Pays d'Afrique</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="phone-mockup">
+      <div class="pm-screen">
+        <div class="pm-top">
+          <span class="pm-logo">Afrikonnect</span>
+          <span class="pm-notif">🔔 3</span>
+        </div>
+        <div class="pm-greeting">Bonjour Mamadou 👋</div>
+        <div class="pm-cards">
+          <div class="pm-card green">
+            <div class="pm-card-label">Commande #4821</div>
+            <div class="pm-card-val">En transit ✓</div>
+            <div class="pm-card-bar"><div class="pm-bar-fill" style="width:55%"></div></div>
+          </div>
+          <div class="pm-card red">
+            <div class="pm-card-label">⚠ Lot #4819</div>
+            <div class="pm-card-val">Douane — action requise</div>
+          </div>
+        </div>
+        <div class="pm-section-title">Fournisseurs recommandés</div>
+        <div class="pm-supplier">
+          <div class="pm-sup-ava">KE</div>
+          <div>
+            <div class="pm-sup-name">Kofi Exports</div>
+            <div class="pm-sup-sub">Côte d'Ivoire · ★★★★★</div>
+          </div>
+          <button class="pm-sup-btn">Contact</button>
+        </div>
+        <div class="pm-supplier">
+          <div class="pm-sup-ava" style="background:#E1F5EE;color:#0F6E56">DS</div>
+          <div>
+            <div class="pm-sup-name">Dakar Spices</div>
+            <div class="pm-sup-sub">Sénégal · ★★★★☆</div>
+          </div>
+          <button class="pm-sup-btn">Contact</button>
+        </div>
+      </div>
+    </div>
+    <div class="floating-card fc1">
+      <span class="fc-icon">📦</span>
+      <div>
+        <div class="fc-title">Commande groupée</div>
+        <div class="fc-sub">3/5 boutiques · Économie 60%</div>
+      </div>
+    </div>
+    <div class="floating-card fc2">
+      <span class="fc-icon">✅</span>
+      <div>
+        <div class="fc-title">Conformité UE</div>
+        <div class="fc-sub">Score 87% · 4 produits vérifiés</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS FOURNISSEURS -->
+<section class="trust-strip">
+  <div class="container">
+    <p class="trust-label">Fournisseurs vérifiés dans 15 pays africains</p>
+    <div class="trust-logos">
+      <span>🇨🇮 Côte d'Ivoire</span>
+      <span>🇸🇳 Sénégal</span>
+      <span>🇨🇲 Cameroun</span>
+      <span>🇳🇬 Nigeria</span>
+      <span>🇬🇭 Ghana</span>
+      <span>🇲🇱 Mali</span>
+      <span>🇧🇫 Burkina Faso</span>
+      <span>🇨🇩 RD Congo</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="fonctionnalites">
+  <div class="container">
+    <div class="section-label-tag">Fonctionnalités</div>
+    <h2 class="section-title">Tout ce dont votre boutique a besoin,<br>dans une seule plateforme</h2>
+    <div class="features-grid">
+      <div class="feat-card feat-main">
+        <div class="feat-icon">🛒</div>
+        <h3>Marketplace B2B</h3>
+        <p>Accédez à plus de 2 000 produits africains déjà certifiés aux normes UE, avec étiquetage français inclus. Commandez directement auprès des fournisseurs sans intermédiaire.</p>
+        <div class="feat-tags">
+          <span>Étiquetage FR inclus</span>
+          <span>Certifié ISO 22000</span>
+          <span>2 000+ produits</span>
+        </div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🚢</div>
+        <h3>Logistique simplifiée</h3>
+        <p>Suivi en temps réel de vos colis depuis l'Afrique jusqu'à votre boutique. Calculateur de fret maritime, aérien et routier intégré.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🛡️</div>
+        <h3>Conformité IA</h3>
+        <p>Vérifiez instantanément la conformité de vos produits aux normes douanières françaises. Scanner de code-barre et checklist automatique.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">👥</div>
+        <h3>Commandes groupées</h3>
+        <p>Partagez un conteneur avec d'autres boutiques de votre région. Réduisez vos coûts logistiques jusqu'à 60% grâce à la mutualisation.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🏦</div>
+        <h3>Tontine numérique</h3>
+        <p>Système d'épargne rotatif sécurisé entre commerçants de confiance. Accédez à un financement communautaire sans passer par les banques.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">💬</div>
+        <h3>Communauté</h3>
+        <p>Forum d'entraide entre commerçants africains en France. Partagez vos expériences, trouvez des partenaires et accédez aux bons plans.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="comment-ca-marche">
+  <div class="container">
+    <div class="section-label-tag">Comment ça marche</div>
+    <h2 class="section-title">De la commande à votre boutique<br>en 4 étapes</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3>Créez votre profil boutique</h3>
+          <p>Inscrivez-vous gratuitement et renseignez votre boutique : localisation, catégories de produits, pays d'approvisionnement habituels.</p>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3>Choisissez vos produits</h3>
+          <p>Parcourez le catalogue de fournisseurs vérifiés, comparez les prix et délais, rejoignez une commande groupée ou commandez seul.</p>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3>On gère la logistique</h3>
+          <p>Transitaire, douane, conformité UE — Afrikonnect coordonne toute la chaîne logistique et vous alerte à chaque étape.</p>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3>Recevez et vendez</h3>
+          <p>Vos produits arrivent conformes, étiquetés en français, prêts à être mis en rayon. Gagnez du temps et de l'argent.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="container">
+    <div class="section-label-tag">Témoignages</div>
+    <h2 class="section-title">Ce qu'en disent les commerçants</h2>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"Avant Afrikonnect, je faisais 3h de route jusqu'à Paris pour m'approvisionner. Maintenant je commande depuis mon téléphone et je reçois tout à Lyon en 20 jours."</p>
+        <div class="testi-author">
+          <div class="testi-ava" style="background:#E1F5EE;color:#0F6E56">MK</div>
+          <div>
+            <strong>Mamadou Konaté</strong>
+            <span>Épicerie Le Sahel — Lyon</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card testi-featured">
+        <div class="testi-stars">★★★★★</div>
+        <p>"Le module conformité m'a sauvé deux fois d'un blocage en douane. Je scanne mes produits avant même de passer commande. C'est indispensable."</p>
+        <div class="testi-author">
+          <div class="testi-ava" style="background:#FAEEDA;color:#854F0B">AB</div>
+          <div>
+            <strong>Aissatou Baldé</strong>
+            <span>Boutique Afro Beauty — Marseille</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"La tontine numérique m'a permis de financer mon premier container sans passer par la banque. La communauté Afrikonnect c'est une vraie famille."</p>
+        <div class="testi-author">
+          <div class="testi-ava" style="background:#E6F1FB;color:#185FA5">KD</div>
+          <div>
+            <strong>Kofi Diallo</strong>
+            <span>Afrik'Market — Bordeaux</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="tarifs">
+  <div class="container">
+    <div class="section-label-tag">Tarifs</div>
+    <h2 class="section-title">Simple, transparent, sans surprise</h2>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-name">Gratuit</div>
+        <div class="price-val">0 €<span>/mois</span></div>
+        <ul class="price-list">
+          <li>✓ 5 commandes/mois</li>
+          <li>✓ Accès marketplace</li>
+          <li>✓ Forum communauté</li>
+          <li>✓ Calculateur de fret</li>
+          <li class="disabled">✗ Conformité IA</li>
+          <li class="disabled">✗ Commandes groupées</li>
+          <li class="disabled">✗ Tontine numérique</li>
+        </ul>
+        <a href="app/index.html" class="btn-price-ghost">Démarrer gratuitement</a>
+      </div>
+      <div class="price-card price-featured">
+        <div class="price-badge">Le plus populaire</div>
+        <div class="price-name">Pro</div>
+        <div class="price-val">29 €<span>/mois</span></div>
+        <ul class="price-list">
+          <li>✓ Commandes illimitées</li>
+          <li>✓ Conformité IA + scanner</li>
+          <li>✓ Commandes groupées</li>
+          <li>✓ Tontine numérique</li>
+          <li>✓ Support prioritaire</li>
+          <li>✓ Alertes douane SMS</li>
+          <li>✓ Tableau de bord avancé</li>
+        </ul>
+        <a href="app/index.html" class="btn-price">Essayer 30 jours gratuits</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name">Fournisseur</div>
+        <div class="price-val">49 €<span>/mois</span></div>
+        <ul class="price-list">
+          <li>✓ Publier vos produits</li>
+          <li>✓ Accès acheteurs France</li>
+          <li>✓ Badge "Vérifié"</li>
+          <li>✓ Gestion des commandes</li>
+          <li>✓ Messagerie acheteurs</li>
+          <li>✓ Statistiques de vente</li>
+          <li>✓ Assistance export UE</li>
+        </ul>
+        <a href="app/index.html" class="btn-price-ghost">Devenir fournisseur</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="cta-orb"></div>
+  <div class="container">
+    <h2>Prêt à transformer votre façon de vous approvisionner ?</h2>
+    <p>Rejoignez 500+ boutiques africaines qui font confiance à Afrikonnect pour leur logistique.</p>
+    <div class="cta-btns">
+      <a href="app/index.html" class="btn-primary">Accéder à l'application →</a>
+      <a href="mailto:contact@afrikonnect.fr" class="btn-ghost">Nous contacter</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-dots"><span class="d1"></span><span class="d2"></span></span>
+          Afrikonnect
+        </div>
+        <p>La marketplace B2B qui connecte les boutiques africaines en France avec des fournisseurs vérifiés en Afrique.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram">📸</a>
+          <a href="#" aria-label="WhatsApp">💬</a>
+          <a href="#" aria-label="LinkedIn">💼</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Plateforme</h4>
+        <a href="#fonctionnalites">Fonctionnalités</a>
+        <a href="#tarifs">Tarifs</a>
+        <a href="app/index.html">Application</a>
+        <a href="#comment-ca-marche">Comment ça marche</a>
+      </div>
+      <div class="footer-col">
+        <h4>Communauté</h4>
+        <a href="#">Forum commerçants</a>
+        <a href="#">Groupements d'achat</a>
+        <a href="#">Tontine numérique</a>
+        <a href="#">Blog & conseils</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:contact@afrikonnect.fr">contact@afrikonnect.fr</a>
+        <a href="tel:+33123456789">+33 1 23 45 67 89</a>
+        <a href="#">Support WhatsApp</a>
+        <a href="#">Mentions légales</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Afrikonnect. Hébergé sur OVH Cloud — France 🇫🇷</span>
+      <span>Tous droits réservés</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>

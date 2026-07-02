@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#1A6B4A"/>
+  <circle cx="200" cy="256" r="60" fill="#27A96C"/>
+  <circle cx="312" cy="256" r="60" fill="#D45A2A"/>
+  <rect x="248" y="230" width="16" height="52" rx="8" fill="#FAF6EF"/>
+  <text x="256" y="420" font-family="sans-serif" font-size="68" font-weight="800" fill="#FAF6EF" text-anchor="middle">AK</text>
+</svg>

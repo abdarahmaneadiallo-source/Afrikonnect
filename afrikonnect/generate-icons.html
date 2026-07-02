@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Générateur d'icônes Afrikonnect</title>
+<style>
+  body { font-family: sans-serif; padding: 20px; background: #f5f5f5; }
+  h2 { color: #1A6B4A; }
+  .grid { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; }
+  .item { text-align: center; }
+  canvas { display: block; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+  a { display: inline-block; margin-top: 6px; font-size: 12px; color: #1A6B4A; }
+  p { color: #555; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<h2>Générateur d'icônes PWA — Afrikonnect</h2>
+<p>Cliquez sur chaque lien pour télécharger l'icône, puis placez-la dans le dossier <code>icons/</code>.</p>
+<div class="grid" id="grid"></div>
+
+<script>
+const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+
+function drawIcon(size) {
+  const c = document.createElement('canvas');
+  c.width = size; c.height = size;
+  const ctx = c.getContext('2d');
+  const r = size * 0.15;
+
+  // Background
+  ctx.fillStyle = '#1A6B4A';
+  ctx.beginPath();
+  ctx.roundRect(0, 0, size, size, r);
+  ctx.fill();
+
+  // Circle gauche (vert)
+  ctx.fillStyle = '#27A96C';
+  ctx.beginPath();
+  ctx.arc(size * 0.37, size * 0.42, size * 0.16, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Circle droite (orange)
+  ctx.fillStyle = '#D45A2A';
+  ctx.beginPath();
+  ctx.arc(size * 0.63, size * 0.42, size * 0.16, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Trait de connexion (lien)
+  ctx.fillStyle = '#FAF6EF';
+  ctx.beginPath();
+  ctx.roundRect(size*0.47, size*0.36, size*0.06, size*0.12, size*0.02);
+  ctx.fill();
+
+  // Texte "AK"
+  ctx.fillStyle = '#FAF6EF';
+  ctx.font = `bold ${size * 0.18}px sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('AK', size / 2, size * 0.76);
+
+  return c;
+}
+
+const grid = document.getElementById('grid');
+sizes.forEach(size => {
+  const canvas = drawIcon(size);
+  const a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  a.download = `icon-${size}.png`;
+  a.textContent = `Télécharger icon-${size}.png`;
+  const label = document.createElement('div');
+  label.style.fontSize = '11px';
+  label.style.color = '#888';
+  label.textContent = `${size}×${size}`;
+  const div = document.createElement('div');
+  div.className = 'item';
+  const preview = drawIcon(Math.min(size, 96));
+  div.appendChild(preview);
+  div.appendChild(document.createElement('br'));
+  div.appendChild(label);
+  div.appendChild(a);
+  grid.appendChild(div);
+});
+</script>
+</body>
+</html>
