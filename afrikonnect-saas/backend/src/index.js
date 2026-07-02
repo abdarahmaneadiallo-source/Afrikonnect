@@ -39,6 +39,7 @@ app.use('/api/tontines',   require('./routes/tontines'));
 app.use('/api/messages',   require('./routes/messages'));
 app.use('/api/stripe',     require('./routes/stripe'));
 app.use('/api/groupes',    require('./routes/groupes'));
+app.use('/api/admin',      require('./routes/admin'));
 
 // ===== HEALTH CHECK =====
 app.get('/health', (req, res) => {
