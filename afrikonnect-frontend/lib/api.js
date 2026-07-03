@@ -55,6 +55,7 @@ export const produitsAPI = {
 // ===== CONFORMITE =====
 export const conformiteAPI = {
   verifier:   (data) => api.post('/conformite/verifier', data),
+  agent:      (messages) => api.post('/conformite/agent', { messages }),
   codes:      ()     => api.get('/conformite/codes'),
   historique: ()     => api.get('/conformite/historique'),
 };

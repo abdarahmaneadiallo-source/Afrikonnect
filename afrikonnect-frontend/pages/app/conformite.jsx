@@ -1,12 +1,23 @@
 // ===== PAGES/APP/CONFORMITE.JSX =====
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import AppLayout from '../../components/layout/AppLayout';
-import { Card, Button, Badge, ProgressBar, Input } from '../../components/ui';
+import { Card, Button, Badge, ProgressBar, Input, Avatar } from '../../components/ui';
 import { conformiteAPI } from '../../lib/api';
 import { useAuthStore } from '../../lib/store';
-import { Shield, Scan, Check, X, AlertTriangle, Lock } from 'lucide-react';
+import { Shield, Scan, Check, X, AlertTriangle, Lock, Sparkles, Send } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+
+const SUGGESTIONS_COMMERCANT = [
+  'Quels documents pour importer du poisson fumé ?',
+  'Comment étiqueter de la farine de manioc ?',
+  'Mon lot est bloqué en douane, que faire ?',
+];
+const SUGGESTIONS_FOURNISSEUR = [
+  'Quels certificats pour exporter du beurre de karité ?',
+  'Comment obtenir l\'agrément UE pour le poisson ?',
+  'Comment éviter 12% de droits sur le textile ?',
+];
 
 const CODES = [
   { nom: 'Huile de palme',   code: '1511 10 90', tva: 5.5,  droit: 0,  libre: true  },
@@ -139,6 +150,9 @@ export default function Conformite() {
         </Card>
       )}
 
+      {/* Agent IA Conformité */}
+      <AgentConformite isPro={isPro} role={user?.role} />
+
       {/* Codes douaniers fréquents */}
       <Card>
         <h2 className="font-semibold text-sm mb-4">Codes douaniers fréquents</h2>
@@ -157,6 +171,111 @@ export default function Conformite() {
         </div>
       </Card>
     </div>
+  );
+}
+
+function AgentConformite({ isPro, role }) {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [thinking, setThinking] = useState(false);
+  const bottomRef = useRef(null);
+
+  const suggestions = role === 'FOURNISSEUR' ? SUGGESTIONS_FOURNISSEUR : SUGGESTIONS_COMMERCANT;
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, thinking]);
+
+  const envoyer = async (texte) => {
+    const question = (texte ?? input).trim();
+    if (!question || thinking) return;
+    if (!isPro) { toast.error('Agent IA réservé au plan Pro'); return; }
+
+    const nouveaux = [...messages, { role: 'user', content: question }];
+    setMessages(nouveaux);
+    setInput('');
+    setThinking(true);
+    try {
+      const res = await conformiteAPI.agent(nouveaux);
+      setMessages([...nouveaux, { role: 'assistant', content: res.data.reponse }]);
+    } catch {
+      toast.error('L\'agent est momentanément indisponible');
+      setMessages(messages);
+    } finally {
+      setThinking(false);
+    }
+  };
+
+  return (
+    <Card className="mb-4">
+      <div className="flex items-center gap-2 mb-1">
+        <Sparkles size={15} className="text-gold" />
+        <span className="font-semibold text-sm">Agent Conformité IA</span>
+        <Badge variant="orange">Expert douane & normes UE</Badge>
+      </div>
+      <p className="text-[11px] text-[var(--text3)] mb-4">
+        Posez toutes vos questions réglementaires — réponses adaptées à votre profil
+        {role === 'FOURNISSEUR' ? ' fournisseur (export vers la France)' : ' commerçant (import en France)'}.
+      </p>
+
+      {/* Fil de discussion */}
+      {messages.length === 0 ? (
+        <div className="flex flex-wrap gap-2 mb-4">
+          {suggestions.map((s, i) => (
+            <button
+              key={i}
+              onClick={() => envoyer(s)}
+              className="text-xs border border-[var(--border2)] text-[var(--text2)] rounded-full px-3 py-1.5 hover:border-green/40 hover:text-green transition-colors"
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-3 mb-4 max-h-96 overflow-y-auto pr-1">
+          {messages.map((m, i) => (
+            <div key={i} className={`flex gap-2.5 ${m.role === 'user' ? 'justify-end' : ''}`}>
+              {m.role === 'assistant' && (
+                <div className="w-7 h-7 rounded-full bg-gold/15 border border-gold/25 flex items-center justify-center flex-shrink-0">
+                  <Sparkles size={12} className="text-gold" />
+                </div>
+              )}
+              <div className={`text-xs leading-relaxed rounded-xl px-3.5 py-2.5 max-w-[85%] whitespace-pre-wrap ${
+                m.role === 'user'
+                  ? 'bg-green/15 text-[var(--text)]'
+                  : 'bg-[var(--surface2)] text-[var(--text2)]'
+              }`}>
+                {m.content}
+              </div>
+            </div>
+          ))}
+          {thinking && (
+            <div className="flex gap-2.5">
+              <div className="w-7 h-7 rounded-full bg-gold/15 border border-gold/25 flex items-center justify-center flex-shrink-0">
+                <Sparkles size={12} className="text-gold" />
+              </div>
+              <div className="bg-[var(--surface2)] rounded-xl px-3.5 py-2.5 text-xs text-[var(--text3)]">
+                L'agent analyse votre question…
+              </div>
+            </div>
+          )}
+          <div ref={bottomRef} />
+        </div>
+      )}
+
+      {/* Saisie */}
+      <form onSubmit={e => { e.preventDefault(); envoyer(); }} className="flex gap-2">
+        <input
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder="Ex : quels certificats pour importer des crevettes séchées ?"
+          className="flex-1 bg-[var(--surface2)] border border-[var(--border)] rounded-full px-4 py-2 text-sm text-[var(--text)] placeholder-[var(--text3)] focus:outline-none focus:border-green/40 transition-colors"
+        />
+        <Button type="submit" size="sm" loading={thinking}>
+          <Send size={13} /> Demander
+        </Button>
+      </form>
+    </Card>
   );
 }
 
