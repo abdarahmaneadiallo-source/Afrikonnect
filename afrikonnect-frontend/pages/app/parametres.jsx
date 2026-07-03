@@ -8,10 +8,14 @@ import api from '../../lib/api';
 import { User, Store, CreditCard } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const PLANS = [
-  { id: 'FREE', nom: 'Gratuit', prix: '0 €', desc: '5 commandes/mois, marketplace' },
-  { id: 'PRO', nom: 'Pro', prix: '29 €/mois', desc: 'Commandes illimitées, conformité IA, groupes' },
-  { id: 'FOURNISSEUR', nom: 'Fournisseur', prix: '49 €/mois', desc: 'Catalogue produits, gestion des ventes' },
+const PLANS_COMMERCANT = [
+  { id: 'FREE', nom: 'Gratuit', prix: '0 €', desc: '5 commandes/mois, marketplace, 1 conteneur groupé' },
+  { id: 'PRO', nom: 'Pro', prix: '29 €/mois', desc: 'Commandes illimitées, conformité IA, priorité conteneurs, support WhatsApp' },
+];
+
+const PLANS_FOURNISSEUR = [
+  { id: 'FREE', nom: 'Starter', prix: '0 €', desc: '5 produits max, visibilité standard' },
+  { id: 'FOURNISSEUR', nom: 'Vérifié', prix: '49 €/mois', desc: 'Badge vérifié, produits illimités, mise en avant marketplace, statistiques de demande' },
 ];
 
 export default function Parametres() {
@@ -117,10 +121,11 @@ export default function Parametres() {
       {/* Abonnement */}
       <Card>
         <div className="flex items-center gap-2 text-sm font-semibold mb-4">
-          <CreditCard size={15} className="text-gold" /> Abonnement
+          <CreditCard size={15} className="text-gold" />
+          Abonnement {user?.role === 'FOURNISSEUR' ? 'Fournisseur' : 'Commerçant'}
         </div>
-        <div className="grid sm:grid-cols-3 gap-3">
-          {PLANS.map(p => {
+        <div className="grid sm:grid-cols-2 gap-3">
+          {(user?.role === 'FOURNISSEUR' ? PLANS_FOURNISSEUR : PLANS_COMMERCANT).map(p => {
             const actif = user?.plan === p.id;
             return (
               <button
@@ -140,6 +145,11 @@ export default function Parametres() {
             );
           })}
         </div>
+        {user?.role === 'FOURNISSEUR' && (
+          <p className="text-[11px] text-[var(--text3)] mt-3">
+            🎁 Les 15 premiers fournisseurs signés bénéficient du plan Vérifié gratuit pendant 3 mois.
+          </p>
+        )}
       </Card>
     </div>
   );
