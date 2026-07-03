@@ -40,6 +40,7 @@ app.use('/api/messages',   require('./routes/messages'));
 app.use('/api/stripe',     require('./routes/stripe'));
 app.use('/api/groupes',    require('./routes/groupes'));
 app.use('/api/admin',      require('./routes/admin'));
+app.use('/api/chatbot',    require('./routes/chatbot'));
 
 // ===== HEALTH CHECK =====
 app.get('/health', (req, res) => {
